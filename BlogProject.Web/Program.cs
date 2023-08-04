@@ -1,9 +1,11 @@
 using BlogProject.Data.Extensions;
+using BlogProject.Services.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.LoadDataLayerExtension(builder.Configuration);
+builder.Services.LoadServiceLayerExtensions(); //MyServiceLayerExtensions
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 var app = builder.Build();
