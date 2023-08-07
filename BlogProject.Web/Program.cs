@@ -1,12 +1,48 @@
+﻿using BlogProject.Data.Context;
 using BlogProject.Data.Extensions;
+using BlogProject.Entity.Entities;
 using BlogProject.Services.Extensions;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.LoadDataLayerExtension(builder.Configuration);
 builder.Services.LoadServiceLayerExtensions(); //MyServiceLayerExtensions
+builder.Services.AddSession(); //Oturumlar için
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+
+//-------------------------------DIKKAT-------------------------------
+//CANLI ÖNCESI BURAYI KALDIR
+builder.Services.AddIdentity<AppUser, AppRole>(
+    opt =>
+    {
+        opt.Password.RequireNonAlphanumeric = false;
+        opt.Password.RequireLowercase = false;
+        opt.Password.RequireUppercase = false;
+    })
+    .AddRoleManager<RoleManager<AppRole>>().
+    AddEntityFrameworkStores<AppDbContext>().
+    AddDefaultTokenProviders();
+//-------------------------------DIKKAT-------------------------------
+//-------------------------------DIKKAT-------------------------------
+builder.Services.ConfigureApplicationCookie(config =>
+{
+    config.LoginPath = new PathString("/Admin/Auth/Login"); //Area/[controller]/[action] => Biri giriþ yapmamýþsa bu sayfaya yönlendirsin diye.
+    config.LogoutPath = new PathString("/Admin/Auth/Logout");
+    config.Cookie = new CookieBuilder
+    {
+        Name = "tayfunfirtina",
+        HttpOnly = true,
+        SameSite = SameSiteMode.Strict,
+        SecurePolicy = CookieSecurePolicy.SameAsRequest //CANLIDA BURAYI "always" olarak deðiþtirmeyi unutma
+    };
+    config.SlidingExpiration = true;
+    config.ExpireTimeSpan = TimeSpan.FromDays(7);
+    config.AccessDeniedPath = new PathString("/Admin/Auth/AccessDenied"); // => Yetkisiz yapýlmak istenen iþlemlerde bu sayfaya yönlendiricem.
+});
+//-------------------------------DIKKAT-------------------------------
 
 var app = builder.Build();
 
@@ -17,12 +53,12 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession(); //Oturumlar için 
 
 app.UseRouting();
-
+app.UseAuthentication(); //Her zaman UseAuthorizationun üstünde olması lazım.
 app.UseAuthorization();
 
 app.MapControllerRoute(
