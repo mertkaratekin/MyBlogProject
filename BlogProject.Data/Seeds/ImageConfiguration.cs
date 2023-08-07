@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BlogProject.Entity.Entities;
 
 namespace BlogProject.Data.Seeds
 {
