@@ -61,9 +61,10 @@ namespace BlogProject.Data.Seeds
                 NormalizedEmail = "SUPERADMIN@GMAIL.COM",
                 PhoneNumber = "+905556667788",
                 PhoneNumberConfirmed = true,
-                FirstName = "Tayfun",
-                LastName = "Fırtına",
-                SecurityStamp = Guid.NewGuid().ToString()
+                FirstName = "Mert",
+                LastName = "Karatekin",
+                SecurityStamp = Guid.NewGuid().ToString(),
+                ImageId = Guid.Parse("F71F4B9A-AA60-461D-B398-DE31001BF214")
             };
 
             superadminUser.PasswordHash = MyCustomCreatePasswordHasher(superadminUser, "123456");
@@ -81,7 +82,8 @@ namespace BlogProject.Data.Seeds
                 PhoneNumberConfirmed = false,
                 FirstName = "Admin",
                 LastName = "User",
-                SecurityStamp = Guid.NewGuid().ToString()
+                SecurityStamp = Guid.NewGuid().ToString(),
+                ImageId = Guid.Parse("D16A6EC7-8C50-4AB0-89A5-02B9A551F0FA")
             };
 
             adminUser.PasswordHash = MyCustomCreatePasswordHasher(adminUser, "123456");
