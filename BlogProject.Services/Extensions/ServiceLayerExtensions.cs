@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using BlogProject.Services.Services.Abstracts;
+using BlogProject.Services.Services.Concretes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,8 @@ namespace BlogProject.Services.Extensions
     {
         public static IServiceCollection LoadServiceLayerExtensions(this IServiceCollection services)
         {
+            services.AddScoped<IArticleService, ArticleService>(); //Article Service
+
             var assembly = Assembly.GetExecutingAssembly(); //AutoMapper Service
             services.AddAutoMapper(assembly); //AutoMapper Service
             return services;
