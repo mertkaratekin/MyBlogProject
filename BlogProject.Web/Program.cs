@@ -1,6 +1,7 @@
 ﻿using BlogProject.Data.Context;
 using BlogProject.Data.Extensions;
 using BlogProject.Entity.Entities;
+using BlogProject.Services.Describers;
 using BlogProject.Services.Extensions;
 using Microsoft.AspNetCore.Identity;
 using NToastNotify;
@@ -30,9 +31,10 @@ builder.Services.AddIdentity<AppUser, AppRole>(
         opt.Password.RequireLowercase = false;
         opt.Password.RequireUppercase = false;
     })
-    .AddRoleManager<RoleManager<AppRole>>().
-    AddEntityFrameworkStores<AppDbContext>().
-    AddDefaultTokenProviders();
+    .AddRoleManager<RoleManager<AppRole>>()
+    .AddErrorDescriber<CustomIdentityErrorDescriber>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
 //-------------------------------DIKKAT-------------------------------
 //-------------------------------DIKKAT-------------------------------
 builder.Services.ConfigureApplicationCookie(config =>
