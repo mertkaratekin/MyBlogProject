@@ -1,18 +1,17 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using BlogProject.Services.FluentValidations;
 using BlogProject.Services.Services.Abstracts;
 using BlogProject.Services.Services.Concretes;
+using BlogProject.Services.Services.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using FluentValidation.AspNetCore;
-using System.Globalization;
-using BlogProject.Services.FluentValidations;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using BlogProject.Services.Services.Helpers;
 
 namespace BlogProject.Services.Extensions
 {
@@ -23,6 +22,7 @@ namespace BlogProject.Services.Extensions
             services.AddScoped<IArticleService, ArticleService>(); //Article Service
             services.AddScoped<ICategoryService, CategoryService>(); //Category Service
             services.AddScoped<IImageHelper, ImageHelper>(); // ImageUpload Service
+            services.AddScoped<IUserService, UserService>(); //User Service
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //ClaimsPrincipal Kullaniciyi bulma servisi
 
