@@ -13,7 +13,7 @@ namespace BlogProject.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20230807124354_first_migration")]
-    partial class first_migration
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

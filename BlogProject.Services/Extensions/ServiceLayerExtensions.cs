@@ -11,6 +11,8 @@ using FluentValidation.AspNetCore;
 using System.Globalization;
 using BlogProject.Services.FluentValidations;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+using BlogProject.Services.Services.Helpers;
 
 namespace BlogProject.Services.Extensions
 {
@@ -20,6 +22,7 @@ namespace BlogProject.Services.Extensions
         {
             services.AddScoped<IArticleService, ArticleService>(); //Article Service
             services.AddScoped<ICategoryService, CategoryService>(); //Category Service
+            services.AddScoped<IImageHelper, ImageHelper>(); // ImageUpload Service
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //ClaimsPrincipal Kullaniciyi bulma servisi
 
