@@ -1,5 +1,12 @@
-﻿using BlogProject.Services.Services.Abstracts;
+﻿using AutoMapper;
+using BlogProject.Core.Utils;
+using BlogProject.Entity.DTOs.Categories;
+using BlogProject.Entity.Entities;
+using BlogProject.Services.Services.Abstracts;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 
 namespace BlogProject.Web.Areas.Admin.Controllers
 {
@@ -8,15 +15,77 @@ namespace BlogProject.Web.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
+        private readonly IMapper _mapper;
+        private readonly IValidator<Category> _validator;
+        private readonly IToastNotification _toastNotification;
 
-        public CategoryController(ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService, IMapper mapper, IValidator<Category> validator, IToastNotification toastNotification)
         {
             _categoryService = categoryService;
+            _mapper = mapper;
+            _validator = validator;
+            _toastNotification = toastNotification;
         }
 
         public async Task<IActionResult> Index()
         {
             return View(await _categoryService.GetAllCategoriesNonDeletedAsync());
+        }
+
+        [HttpGet]
+        public IActionResult Add()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(CategoryAddDto categoryAddDto)
+        {
+            var map = _mapper.Map<Category>(categoryAddDto);
+            var result = await _validator.ValidateAsync(map);
+
+            if (result.IsValid)
+            {
+                await _categoryService.AddCategoryAsync(categoryAddDto);
+                _toastNotification.AddSuccessToastMessage(ToastrMessages.CategoryMessage.AddMessage(categoryAddDto.Name), new ToastrOptions { Title = "Başarılı !" });
+                return RedirectToAction("Index", "Category", new { Area = "Admin" });
+            }
+
+            result.AddToModelState(this.ModelState);
+            return View(categoryAddDto);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(Guid categoryId)
+        {
+            var category = await _categoryService.GetCategoryByIdAsync(categoryId);
+            var map = _mapper.Map<Category, CategoryUpdateDto>(category);
+            return View(map);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(CategoryUpdateDto categoryUpdateDto)
+        {
+            var map = _mapper.Map<Category>(categoryUpdateDto);
+            var result = await _validator.ValidateAsync(map);
+
+            if (result.IsValid)
+            {
+                var name = await _categoryService.UpdateCategoryAsync(categoryUpdateDto);
+                _toastNotification.AddSuccessToastMessage(ToastrMessages.CategoryMessage.UpdateMessage(name), new ToastrOptions { Title = "Başarılı !" });
+                return RedirectToAction("Index", "Category", new { Area = "Admin" });
+            }
+
+            result.AddToModelState(this.ModelState);
+            return View(categoryUpdateDto);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid categoryId)
+        {
+            var title = await _categoryService.DeleteSafeAsync(categoryId);
+            _toastNotification.AddWarningToastMessage(ToastrMessages.CategoryMessage.DeleteMessage(title), new ToastrOptions { Title = "Başarılı !" });
+            return RedirectToAction("Index", "Category", new { Area = "Admin" });
         }
     }
 }

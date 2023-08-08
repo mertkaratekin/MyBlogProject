@@ -51,7 +51,7 @@ namespace BlogProject.Web.Areas.Admin.Controllers
             if (result.IsValid)
             {
                 await _articleService.AddArticleAsync(articleAddDto);
-                _toastNotification.AddSuccessToastMessage(ToastrMessages.AddMessage(articleAddDto.Title), new ToastrOptions { Title = "Başarılı !" });
+                _toastNotification.AddSuccessToastMessage(ToastrMessages.ArticleMessage.AddMessage(articleAddDto.Title), new ToastrOptions { Title = "Başarılı !" });
                 return RedirectToAction("Index", "Article", new { Area = "Admin" });
             }
             else
@@ -83,7 +83,7 @@ namespace BlogProject.Web.Areas.Admin.Controllers
             if (result.IsValid)
             {
                 string title = await _articleService.UpdateArticleAsync(articleUpdateDto);
-                _toastNotification.AddInfoToastMessage(ToastrMessages.UpdateMessage(title), new ToastrOptions { Title = "Başarılı !" });
+                _toastNotification.AddInfoToastMessage(ToastrMessages.ArticleMessage.UpdateMessage(title), new ToastrOptions { Title = "Başarılı !" }); 
                 return RedirectToAction("Index", "Article", new { Area = "Admin" });
             }
             else
@@ -100,7 +100,7 @@ namespace BlogProject.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(Guid articleId)
         {
             var title = await _articleService.DeleteSafeAsync(articleId);
-            _toastNotification.AddWarningToastMessage(ToastrMessages.DeleteMessage(title), new ToastrOptions { Title = "Başarılı !" });
+            _toastNotification.AddWarningToastMessage(ToastrMessages.ArticleMessage.DeleteMessage(title), new ToastrOptions { Title = "Başarılı !" });
             return RedirectToAction("Index", "Article", new { Area = "Admin" });
         }
     }
