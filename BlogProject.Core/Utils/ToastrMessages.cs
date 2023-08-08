@@ -21,7 +21,12 @@ namespace BlogProject.Core.Utils
 
             public static string DeleteMessage(string articleTitle)
             {
-                return $"{articleTitle} başlıklı makale silinmiştir.";
+                return $"{articleTitle} başlıklı makale çöp kutusuna taşındı.";
+            }
+
+            public static string UndoDeleteMessage(string articleTitle)
+            {
+                return $"{articleTitle} başlıklı makale geri alındı.";
             }
         }
 
@@ -37,7 +42,12 @@ namespace BlogProject.Core.Utils
             }
             public static string DeleteMessage(string categoryName)
             {
-                return $"{categoryName} başlıklı kategori silinmiştir.";
+                return $"{categoryName} başlıklı kategori silindi.";
+            }
+
+            public static string UndoDeleteMessage(string categoryName)
+            {
+                return $"{categoryName} başlıklı kategori geri alındı.";
             }
         }
         public static class UserMessage
@@ -54,7 +64,7 @@ namespace BlogProject.Core.Utils
 
             public static string DeleteMessage(string userName)
             {
-                return $"{userName} e-posta adresli kullanıcı silinmiştir.";
+                return $"{userName} e-posta adresli kullanıcı silindi.";
             }
         }
     }

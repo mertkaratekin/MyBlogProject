@@ -1,14 +1,17 @@
 ﻿using AutoMapper;
-using BlogProject.Core.Utils;
-using BlogProject.Entity.DTOs.Users;
-using BlogProject.Entity.Entities;
 using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NToastNotify;
+using BlogProject.Core.Enums;
+using BlogProject.Core.Utils;
+using BlogProject.Data.UnitOfWorks;
+using BlogProject.Entity.DTOs.Users;
+using BlogProject.Entity.Entities;
 using BlogProject.Services.Extensions;
+using BlogProject.Services.Services.Abstracts;
+using BlogProject.Services.Services.Helpers;
+using NToastNotify;
 using System.Linq;
 
 namespace BlogProject.Web.Areas.Admin.Controllers

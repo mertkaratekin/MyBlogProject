@@ -26,10 +26,15 @@ namespace BlogProject.Web.Areas.Admin.Controllers
             _validator = validator;
             _toastNotification = toastNotification;
         }
-
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             return View(await _categoryService.GetAllCategoriesNonDeletedAsync());
+        }
+        [HttpGet]
+        public async Task<IActionResult> DeletedCategory()
+        {
+            return View(await _categoryService.GetAllCategoriesDeletedAsync());
         }
 
         [HttpGet]
@@ -102,8 +107,15 @@ namespace BlogProject.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid categoryId)
         {
-            var title = await _categoryService.DeleteSafeAsync(categoryId);
+            var title = await _categoryService.DeleteSafeCategoryAsync(categoryId);
             _toastNotification.AddWarningToastMessage(ToastrMessages.CategoryMessage.DeleteMessage(title), new ToastrOptions { Title = "Başarılı !" });
+            return RedirectToAction("Index", "Category", new { Area = "Admin" });
+        }
+        [HttpGet]
+        public async Task<IActionResult> UndoDelete(Guid categoryId)
+        {
+            var title = await _categoryService.DeleteUndoCategoryAsync(categoryId);
+            _toastNotification.AddWarningToastMessage(ToastrMessages.CategoryMessage.UndoDeleteMessage(title), new ToastrOptions { Title = "Başarılı !" });
             return RedirectToAction("Index", "Category", new { Area = "Admin" });
         }
     }

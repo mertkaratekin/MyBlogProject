@@ -48,7 +48,7 @@ namespace BlogProject.Services.Services.Concretes
         }
         //Makale Silme. (Cop kutusuna tasima)
         //Toastr Mesajda basligi donebilmek icin Task<string> eklendi
-        public async Task<string> DeleteSafeAsync(Guid articleId)
+        public async Task<string> DeleteSafeArticleAsync(Guid articleId)
         {
             var userEmail = _user.GetLoggedInEmail();
             var article = await _unitOfWork.GetRepository<Article>().GetByGuidAsync(articleId);
@@ -62,6 +62,31 @@ namespace BlogProject.Services.Services.Concretes
 
             return article.Title;
         }
+        //Silinen makaleyi geri alma.
+        public async Task<string> DeleteUndoArticleAsync(Guid articleId)
+        {
+            var userEmail = _user.GetLoggedInEmail();
+            var article = await _unitOfWork.GetRepository<Article>().GetByGuidAsync(articleId);
+
+            article.IsDeleted = false;
+            article.DeletedDate = null;
+            article.DeletedBy = null;
+
+            await _unitOfWork.GetRepository<Article>().UpdateAsync(article);
+            await _unitOfWork.SaveAsync();
+
+            return article.Title;
+        }
+
+        //Silinmis makaleleri kategorileri ile beraber getir.
+        public async Task<List<ArticleDto>> GetAllArticlesWithCategoryDeletedAsync()
+        {
+            var articles = await _unitOfWork.GetRepository<Article>().GetAllAsync(a => a.IsDeleted, b => b.Category);
+            var map = _mapper.Map<List<ArticleDto>>(articles);
+
+            return map;
+        }
+
         //Silinmemis makaleleri kategorileri ile beraber getir.
         public async Task<List<ArticleDto>> GetAllArticlesWithCategoryNonDeletedAsync()
         {
