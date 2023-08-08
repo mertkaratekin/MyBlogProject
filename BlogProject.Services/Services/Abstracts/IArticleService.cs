@@ -1,5 +1,6 @@
 ﻿using BlogProject.Entity.DTOs.Articles;
 using System;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,7 @@ namespace BlogProject.Services.Services.Abstracts
     public interface IArticleService
     {
         Task<List<ArticleDto>> GetAllArticlesWithCategoryNonDeletedAsync();
+        Task AddArticleAsync(ArticleAddDto articleAddDto);
+
     }
 }

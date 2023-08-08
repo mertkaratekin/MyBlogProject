@@ -14,6 +14,7 @@ namespace BlogProject.Services.AutoMapper
         public ArticleProfile()
         {
             CreateMap<Article, ArticleDto>().ReverseMap();
+            CreateMap<Article, ArticleAddDto>().ReverseMap();
         }
     }
 }
