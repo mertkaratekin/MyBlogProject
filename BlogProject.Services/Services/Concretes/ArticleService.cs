@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using BlogProject.Core.Enums;
 using BlogProject.Data.UnitOfWorks;
 using BlogProject.Entity.DTOs.Articles;
 using BlogProject.Entity.Entities;
 using BlogProject.Services.Extensions;
 using BlogProject.Services.Services.Abstracts;
+using BlogProject.Services.Services.Helpers;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -20,13 +22,16 @@ namespace BlogProject.Services.Services.Concretes
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor; //Kullaniciyi bulma islemi
         private readonly ClaimsPrincipal _user; //Kullaniciyi bulma islemi
+        private readonly IImageHelper _imageHelper; //Resim ekleme icin
 
-        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor httpContextAccessor, IImageHelper imageHelper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
             _user = _httpContextAccessor.HttpContext.User;
+            _imageHelper = imageHelper;
+
         }
         //Makale Ekleme
         public async Task AddArticleAsync(ArticleAddDto articleAddDto)
@@ -34,10 +39,12 @@ namespace BlogProject.Services.Services.Concretes
             //Guid appUserId = Guid.Parse("2C34DA79-F839-4AA8-95DE-1D31A3B39C28");
             var user = _user.GetLoggedInUserId();
             var userEmail = _user.GetLoggedInEmail();
-            Guid imageId = Guid.Parse("F71F4B9A-AA60-461D-B398-DE31001BF214");
+            //Guid imageId = Guid.Parse("F71F4B9A-AA60-461D-B398-DE31001BF214");
+            var imageUpload = await _imageHelper.Upload(articleAddDto.Title, articleAddDto.Photo, ImageType.Post);
+            Image image = new Image(imageUpload.FullName, articleAddDto.Photo.ContentType, userEmail);
+            await _unitOfWork.GetRepository<Image>().AddAsync(image);
 
-            var article = new Article(articleAddDto.Title, articleAddDto.Content, user, userEmail, articleAddDto.CategoryId, imageId);
-            await _unitOfWork.GetRepository<Article>().AddAsync(article);
+            var article = new Article(articleAddDto.Title, articleAddDto.Content, user, userEmail, articleAddDto.CategoryId, image.Id); await _unitOfWork.GetRepository<Article>().AddAsync(article);
             await _unitOfWork.SaveAsync();
         }
         //Makale Silme. (Cop kutusuna tasima)
