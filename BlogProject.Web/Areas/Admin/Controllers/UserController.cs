@@ -83,8 +83,8 @@ namespace BlogProject.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(Guid userId)
         {
-            var user = await _userManager.FindByIdAsync(userId.ToString());
-            var roles = await _roleManager.Roles.ToListAsync();
+            var user = await _userService.GetUserByIdAsync(userId);
+            var roles = await _userService.GetAllRolesAsync();
 
             var map = _mapper.Map<UserUpdateDto>(user);
             map.Roles = roles;
@@ -95,12 +95,12 @@ namespace BlogProject.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(UserUpdateDto userUpdateDto)
         {
-            var user = await _userManager.FindByIdAsync(userUpdateDto.Id.ToString());
+            var user = await _userService.GetUserByIdAsync(userUpdateDto.Id);
 
             if (user != null)
             {
-                var userRole = string.Join("~", await _userManager.GetRolesAsync(user));
-                var roles = await _roleManager.Roles.ToListAsync();
+                var roles = await _userService.GetAllRolesAsync();
+
                 if (ModelState.IsValid)
                 {
                     var map = _mapper.Map(userUpdateDto, user);
@@ -110,12 +110,9 @@ namespace BlogProject.Web.Areas.Admin.Controllers
                     {
                         user.UserName = userUpdateDto.Email;
                         user.SecurityStamp = Guid.NewGuid().ToString();
-                        var result = await _userManager.UpdateAsync(user);
+                        var result = await _userService.UpdateUserAsync(userUpdateDto);
                         if (result.Succeeded)
                         {
-                            await _userManager.RemoveFromRoleAsync(user, userRole);
-                            var findRole = await _roleManager.FindByIdAsync(userUpdateDto.RoleId.ToString());
-                            await _userManager.AddToRoleAsync(user, findRole.Name);
                             _toastNotification.AddSuccessToastMessage(ToastrMessages.UserMessage.UpdateMessage(userUpdateDto.Email), new ToastrOptions { Title = "Başarılı !" });
                             return RedirectToAction("Index", "User", new { Area = "Admin" });
                         }
