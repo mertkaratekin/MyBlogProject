@@ -5,12 +5,12 @@
 'use strict';
 
 (function () {
-    let cardColor, headingColor, axisColor, shadeColor, borderColor;
+     let cardColor, headingColor, axisColor, shadeColor, borderColor;
 
-    cardColor = config.colors.white;
-    headingColor = config.colors.headingColor;
-    axisColor = config.colors.axisColor;
-    borderColor = config.colors.borderColor;
+     cardColor = config.colors.white;
+     headingColor = config.colors.headingColor;
+     axisColor = config.colors.axisColor;
+     borderColor = config.colors.borderColor;
 
     // Total Revenue Report Chart - Bar Chart
     // --------------------------------------------------------------------
@@ -280,7 +280,7 @@
                 height: 240,
                 type: 'radialBar'
             },
-            plotOptions: {
+                        plotOptions: {
                 radialBar: {
                     size: 150,
                     offsetY: 10,
@@ -350,7 +350,6 @@
         const growthChart = new ApexCharts(growthChartEl, growthChartOptions);
         growthChart.render();
     }
-
     // Profit Report Line Chart
     // --------------------------------------------------------------------
     const profileReportChartEl = document.querySelector('#profileReportChart'),
@@ -413,7 +412,6 @@
         const profileReportChart = new ApexCharts(profileReportChartEl, profileReportChartConfig);
         profileReportChart.render();
     }
-
     // Order Statistics Chart
     // --------------------------------------------------------------------
     const chartOrderStatistics = document.querySelector('#orderStatisticsChart'),
@@ -483,7 +481,6 @@
         const statisticsChart = new ApexCharts(chartOrderStatistics, orderChartConfig);
         statisticsChart.render();
     }
-
     // Income Chart - Area chart
     // --------------------------------------------------------------------
     const incomeChartEl = document.querySelector('#incomeChart'),
@@ -582,7 +579,6 @@
         const incomeChart = new ApexCharts(incomeChartEl, incomeChartConfig);
         incomeChart.render();
     }
-
     // Expenses Mini Chart - Radial Chart
     // --------------------------------------------------------------------
     const weeklyExpensesEl = document.querySelector('#expensesOfWeek'),
