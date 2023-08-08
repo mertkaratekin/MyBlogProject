@@ -25,10 +25,14 @@ namespace BlogProject.Services.Services.Concretes
         //Makale Ekleme
         public async Task AddArticleAsync(ArticleAddDto articleAddDto)
         {
-            var map = _mapper.Map<Article>(articleAddDto);
-            await _unitOfWork.GetRepository<Article>().AddAsync(map);
+            var appUserId = Guid.Parse("2C34DA79-F839-4AA8-95DE-1D31A3B39C28");
+            var imageId = Guid.Parse("F71F4B9A-AA60-461D-B398-DE31001BF214");
+            var article = new Article(articleAddDto.Title, articleAddDto.Content, appUserId, articleAddDto.CategoryId, imageId);
+            await _unitOfWork.GetRepository<Article>().AddAsync(article);
             await _unitOfWork.SaveAsync();
         }
+
+
         //Makale Silme. (Cop kutusuna tasima)
         public async Task DeleteSafeAsync(Guid articleId)
         {

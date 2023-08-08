@@ -1,9 +1,26 @@
 ﻿using BlogProject.Core.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BlogProject.Entity.Entities
 {
     public class Article : EntityBase
     {
+        public Article()
+        {
+        }
+
+        public Article(string title, string content, Guid appuserId, Guid cagegoryId, Guid imageId)
+        {
+            Title = title;
+            Content = content;
+            AppUserId = appuserId;
+            CategoryId = cagegoryId;
+            ImageId = imageId;
+        }
         public string Title { get; set; }
         public string Content { get; set; }
         public int ViewCount { get; set; } = 0;
