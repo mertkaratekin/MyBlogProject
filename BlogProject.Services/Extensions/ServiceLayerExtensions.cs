@@ -7,6 +7,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation.AspNetCore;
+using System.Globalization;
+using BlogProject.Services.FluentValidations;
 
 namespace BlogProject.Services.Extensions
 {
@@ -19,6 +22,14 @@ namespace BlogProject.Services.Extensions
 
             var assembly = Assembly.GetExecutingAssembly(); //AutoMapper Service
             services.AddAutoMapper(assembly); //AutoMapper Service
+
+            services.AddControllersWithViews().AddFluentValidation(opt =>
+            {
+                opt.RegisterValidatorsFromAssemblyContaining<ArticleValidator>();
+                opt.DisableDataAnnotationsValidation = true;
+                opt.ValidatorOptions.LanguageManager.Culture = new CultureInfo("tr");
+            });
+
             return services;
         }
     }
