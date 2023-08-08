@@ -66,13 +66,16 @@ namespace BlogProject.Services.Services.Concretes
         public async Task UpdateArticleAsync(ArticleUpdateDto articleUpdateDto)
         {
             var article = await _unitOfWork.GetRepository<Article>().GetAsync(x => !x.IsDeleted && x.Id == articleUpdateDto.Id, x => x.Category);
-            article.ModifiedBy = "undefined";
-            article.ModifiedDate = DateTime.Now;
+            if (article != null)
+            {
+                article.ModifiedBy = "undefined";
+                article.ModifiedDate = DateTime.Now;
 
-            _mapper.Map(articleUpdateDto, article);
+                _mapper.Map(articleUpdateDto, article);
 
-            await _unitOfWork.GetRepository<Article>().UpdateAsync(article);
-            await _unitOfWork.SaveAsync();
+                await _unitOfWork.GetRepository<Article>().UpdateAsync(article);
+                await _unitOfWork.SaveAsync();
+            }
 
         }
     }
