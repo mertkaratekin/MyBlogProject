@@ -27,6 +27,13 @@ namespace BlogProject.Web.Controllers
         {
             return View(await _articleService.SearchAsync(keyword, currentPage, pageSize, isAscending));
         }
+        [HttpGet]
+        public async Task<IActionResult> Detail(Guid id)
+        {
+            var article = await _articleService.GetArticleWithCategoryNonDeletedAsync(id);
+
+            return View(article);
+        }
 
         public IActionResult Privacy()
         {
