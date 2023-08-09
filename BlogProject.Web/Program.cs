@@ -3,6 +3,7 @@ using BlogProject.Data.Extensions;
 using BlogProject.Entity.Entities;
 using BlogProject.Services.Describers;
 using BlogProject.Services.Extensions;
+using BlogProject.Web.Filters;
 using Microsoft.AspNetCore.Identity;
 using NToastNotify;
 
@@ -14,7 +15,10 @@ builder.Services.LoadServiceLayerExtensions(); //MyServiceLayerExtensions
 builder.Services.AddSession(); //Oturumlar için
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
-builder.Services.AddControllersWithViews().AddNToastNotifyToastr(new ToastrOptions() //Toastr Service
+builder.Services.AddControllersWithViews(opt =>
+{
+opt.Filters.Add<ArticleVisitorFilter>(); //Filters
+}).AddNToastNotifyToastr(new ToastrOptions() //Toastr Service
 {
     ProgressBar = true,
     PositionClass = ToastPositions.TopRight,

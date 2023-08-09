@@ -1,7 +1,9 @@
-﻿using BlogProject.Services.Services.Abstracts;
+﻿using BlogProject.Data.UnitOfWorks;
+using BlogProject.Services.Services.Abstracts;
 using BlogProject.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+
 
 namespace BlogProject.Web.Controllers
 {
@@ -10,11 +12,15 @@ namespace BlogProject.Web.Controllers
         private readonly ILogger<HomeController> _logger;
 
         private readonly IArticleService _articleService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(ILogger<HomeController> logger, IArticleService articleService)
+        public HomeController(ILogger<HomeController> logger, IArticleService articleService, IHttpContextAccessor httpContextAccessor, IUnitOfWork unitOfWork)
         {
             _logger = logger;
             _articleService = articleService;
+            _httpContextAccessor = httpContextAccessor;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
