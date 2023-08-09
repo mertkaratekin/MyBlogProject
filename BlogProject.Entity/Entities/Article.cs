@@ -31,5 +31,7 @@ namespace BlogProject.Entity.Entities
         public Image Image { get; set; }
         public Guid AppUserId { get; set; }
         public AppUser AppUser { get; set; }
+        public ICollection<ArticleVisitor> ArticleVisitors { get; set; }
+
     }
 }
