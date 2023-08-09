@@ -103,6 +103,17 @@ namespace BlogProject.Services.Services.Concretes
 
             return map;
         }
+        //En son eklenen 3 makaleyi getir.
+        public async Task<List<ArticleDto>> GetAllArticlesWithCategoryNonDeletedTake3Async()
+        {
+            var articles = await _unitOfWork.GetRepository<Article>().GetAllAsync(x => !x.IsDeleted, x => x.Category);
+            var map = _mapper.Map<List<ArticleDto>>(articles);
+
+            var takeRecentArticles = map.TakeLast(3).ToList();
+
+            return takeRecentArticles;
+        }
+
         //Makele guncelleme.
         //Toastr Mesajda basligi donebilmek icin Task<string> eklendi
         public async Task<string> UpdateArticleAsync(ArticleUpdateDto articleUpdateDto)
