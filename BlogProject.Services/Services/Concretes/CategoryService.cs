@@ -85,6 +85,16 @@ namespace BlogProject.Services.Services.Concretes
 
             return map;
         }
+        //Silinmemis kategorilerden 24 tanesini getir
+        public async Task<List<CategoryDto>> GetAllCategoriesNonDeletedTake24Async()
+        {
+            var categories = await _unitOfWork.GetRepository<Category>().GetAllAsync(x => !x.IsDeleted);
+            var map = _mapper.Map<List<CategoryDto>>(categories);
+
+            var takeCategories = map.Take(24).ToList();
+
+            return takeCategories;
+        }
         //Istenen Kategoriyi Getir
         public async Task<Category> GetCategoryByIdAsync(Guid categoryId)
         {
