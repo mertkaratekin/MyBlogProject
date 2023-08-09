@@ -13,7 +13,8 @@ namespace BlogProject.Entity.Entities
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public Guid ImageId { get; set; } = Guid.Parse("F9660BDF-1BD1-47EE-7957-08DB62DD9E9E"); public Image Image { get; set; }
+        public Guid ImageId { get; set; } = Guid.Parse("F9660BDF-1BD1-47EE-7957-08DB62DD9E9E"); 
+        public Image Image { get; set; }
         public ICollection<Article> Articles { get; set; }
     }
 }

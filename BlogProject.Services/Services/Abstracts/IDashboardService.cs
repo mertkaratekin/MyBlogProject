@@ -8,6 +8,8 @@ namespace BlogProject.Services.Services.Abstracts
 {
     public interface IDashboardService
     {
-        Task<List<int>> GetYearlyArticleCounts();
+        Task<List<int>> GetYearlyArticleCountsAsync();
+        Task<int> TotalCategoryCountAsync();
+        Task<int> TotalArticleCountAsync();
     }
 }

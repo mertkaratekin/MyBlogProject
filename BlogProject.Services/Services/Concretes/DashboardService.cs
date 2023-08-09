@@ -18,7 +18,7 @@ namespace BlogProject.Services.Services.Concretes
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<int>> GetYearlyArticleCounts()
+        public async Task<List<int>> GetYearlyArticleCountsAsync()
         {
             var articles = await _unitOfWork.GetRepository<Article>().GetAllAsync(x => !x.IsDeleted);
 
@@ -36,6 +36,17 @@ namespace BlogProject.Services.Services.Concretes
             }
 
             return datas;
+        }
+        public async Task<int> TotalCategoryCountAsync()
+        {
+            var totalCategoryCount = await _unitOfWork.GetRepository<Category>().CountAsync();
+            return totalCategoryCount;
+        }
+
+        public async Task<int> TotalArticleCountAsync()
+        {
+            var totalArticleCount = await _unitOfWork.GetRepository<Article>().CountAsync();
+            return totalArticleCount;
         }
     }
 }
